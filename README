@@ -1,0 +1,4 @@
+Simple link shortener written in Fancy using sinatra.fy
+Has no persistence yet.
+See: http://fancy-lang.org
+     http://github.com/rkh/sinatra.fy
