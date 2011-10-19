@@ -2,6 +2,7 @@ require("rubygems")
 require("sha1")
 require: "sinatra"
 require: "../lib/template"
+require: "../lib/html"
 
 WIKI_ROOT = File expand_path(".", File dirname(__FILE__))
 Template path_prefix: WIKI_ROOT
@@ -18,8 +19,32 @@ configure: 'development with: {
 }
 set: 'port to: 3000
 
+# basic layout
+def with_layout: b {
+  HTML new: |h| {
+    h html: {
+      h head: {
+        h title: "Shortefy v0.0.1"
+      }
+      h body: {
+        b call: [h]
+      }
+    }
+  } to_s
+}
+
 get: "/" do: {
-  Template["views/index.fyhtml"] render
+  with_layout: |h| {
+    h form: <['action => "/new", 'method => "post"]> with: {
+      h fieldset: {
+        h label: <['for => "title"]> with: "Link"
+        h br
+        h input: <['type => "text", 'id => "link", 'name => "link", 'value => "http://"]>
+        h br
+        h input: <['type => "submit", 'value => "SAVE"]>
+      }
+    }
+  }
 }
 
 post: "/new" do: {
@@ -31,7 +56,12 @@ post: "/new" do: {
 
 get: /^\/show/([a-zA-Z0-9]+)/ do: |id| {
   if: (get_link: id) then: |link| {
-    Template["views/show.fyhtml"] render: <['id => id, 'link => link]>
+    with_layout: |h| {
+      h h1: "ID: #{id}"
+      h h2: {
+        h a: <['href => link]> with: link
+      }
+    }
   }
 }
 
