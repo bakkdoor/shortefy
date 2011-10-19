@@ -1,11 +1,7 @@
 require("rubygems")
 require("sha1")
 require: "sinatra"
-require: "../lib/template"
 require: "../lib/html"
-
-WIKI_ROOT = File expand_path(".", File dirname(__FILE__))
-Template path_prefix: WIKI_ROOT
 
 LINKS = <[]>
 
@@ -14,9 +10,7 @@ configure: 'production with: { disable: 'show_errors }
 configure: ['production, 'development] with: {
   enable: 'logging
 }
-configure: 'development with: {
-  Template caching: false # disable caching in dev mode
-}
+
 set: 'port to: 3000
 
 # basic layout
