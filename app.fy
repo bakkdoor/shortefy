@@ -2,8 +2,9 @@ require("rubygems")
 require("sha1")
 require: "sinatra"
 require: "html"
+require: "redis"
 
-LINKS = <[]>
+R = Redis Client new
 
 configure: { enable: 'sessions }
 configure: 'production with: { disable: 'show_errors }
@@ -14,17 +15,27 @@ configure: ['production, 'development] with: {
 set: 'port to: 3000
 
 # basic layout
-def with_layout: b {
+def with_layout: body {
   HTML new: |h| {
     h html: {
       h head: {
         h title: "Shortefy v0.0.1"
       }
       h body: {
-        b call: [h]
+        body(h)
       }
     }
   } to_s
+}
+
+def with_link: id do: block else: else_block ({ "" }) {
+  if: (R call: ('get, key: id)) then: |link| {
+    block(link)
+  } else: else_block
+}
+
+def key: id {
+  "shortefy:#{id}"
 }
 
 get: "/" do: {
@@ -44,30 +55,26 @@ get: "/" do: {
 post: "/new" do: {
   link = params['link]
   key = SHA1 new(link) to_s [[0, 10]]
-  LINKS[key]: link
+  R call: ('set, key: key, link)
   redirect: "/show/#{key}"
 }
 
-get: /^\/show/([a-zA-Z0-9]+)/ do: |id| {
-  if: (get_link: id) then: |link| {
+get: "/show/:id" do: |id| {
+  with_link: id do: |link| {
     with_layout: |h| {
       h h1: "ID: #{id}"
       h h2: {
         h a: <['href => link]> with: link
       }
     }
+  } else: {
+    redirect: "/"
   }
 }
 
-get: /^\/([a-zA-Z0-9]+)/ do: |id| {
-  redirect: $ get_link: id
-}
-
-def get_link: id {
-  if: (LINKS[id]) then: |link| {
-    link
-  } else: {
-    "Link '#{id}' does not exist!" raise!
+get: "/:id" do: |id| {
+  with_link: id do: |link| {
+    redirect: link
   }
 }
 

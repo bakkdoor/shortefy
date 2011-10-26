@@ -1,4 +1,6 @@
 Simple link shortener written in Fancy using sinatra.fy
-Has no persistence yet.
+Uses Redis for persisting data.
+
 See: http://fancy-lang.org
+     http://github.com/bakkdoor/redis.fy
      http://github.com/rkh/sinatra.fy
