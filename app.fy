@@ -1,7 +1,7 @@
 require("rubygems")
 require("sha1")
 require: "sinatra"
-require: "../lib/html"
+require: "html"
 
 LINKS = <[]>
 
