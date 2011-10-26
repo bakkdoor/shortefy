@@ -1,6 +1,12 @@
 Simple link shortener written in Fancy using sinatra.fy
 Uses Redis for persisting data.
 
+With the latest version of Fancy run the following to install all dependencies:
+
+    $ fancy install --deps
+    # start up redis on localhost and then run the app:
+    $ fancy app.fy
+
 See: http://fancy-lang.org
      http://github.com/bakkdoor/redis.fy
      http://github.com/rkh/sinatra.fy
