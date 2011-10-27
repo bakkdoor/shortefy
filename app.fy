@@ -5,7 +5,8 @@ require: "redis"
 
 R = Redis Client new
 
-configure: { enable: 'sessions }
+# CONFIGURATION
+
 configure: 'production with: { disable: 'show_errors }
 configure: ['production, 'development] with: {
   enable: 'logging
@@ -13,7 +14,9 @@ configure: ['production, 'development] with: {
 
 set: 'port to: 3000
 
-# basic layout
+# HELPER METHODS
+
+# basic html layout
 def with_layout: body {
   HTML new: |h| {
     h html: {
@@ -49,6 +52,8 @@ def incr_counter: id {
 def counter: id {
   R[('get, count_key: id)] to_i
 }
+
+# PAGE ROUTES
 
 get: "/" do: {
   with_layout: |h| {
