@@ -38,6 +38,18 @@ def key: id {
   "shortefy:#{id}"
 }
 
+def count_key: id {
+  key: id + ":count"
+}
+
+def incr_counter: id {
+  R[('incr, count_key: id)]
+}
+
+def counter: id {
+  R[('get, count_key: id)] to_i
+}
+
 get: "/" do: {
   with_layout: |h| {
     h form: <['action => "/new", 'method => "post"]> with: {
@@ -54,15 +66,16 @@ get: "/" do: {
 
 post: "/new" do: {
   link = params['link]
-  key = SHA1 new(link) to_s [[0, 10]]
-  R[('set, key: key, link)]
-  redirect: "/show/#{key}"
+  id = SHA1 new(link) to_s [[0, 10]]
+  R[('set, key: id, link)]
+  redirect: "/show/#{id}"
 }
 
 get: "/show/:id" do: |id| {
   with_link: id do: |link| {
     with_layout: |h| {
       h h1: "ID: #{id}"
+      h h2: "Clicks: #{counter: id}"
       h h2: {
         h a: <['href => link]> with: link
       }
@@ -74,6 +87,7 @@ get: "/show/:id" do: |id| {
 
 get: "/:id" do: |id| {
   with_link: id do: |link| {
+    incr_counter: id
     redirect: link
   }
 }
