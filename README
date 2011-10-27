@@ -7,6 +7,9 @@ With the latest version of Fancy run the following to install all dependencies:
     # start up redis on localhost and then run the app:
     $ fancy app.fy
 
-See: http://fancy-lang.org
-     http://github.com/bakkdoor/redis.fy
-     http://github.com/rkh/sinatra.fy
+I also made a screencast related to this:
+      http://www.youtube.com/watch?v=1GXaGVLVsOs
+
+Also: http://fancy-lang.org
+      http://github.com/bakkdoor/redis.fy
+      http://github.com/rkh/sinatra.fy
