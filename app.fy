@@ -29,7 +29,7 @@ def with_layout: body {
 }
 
 def with_link: id do: block else: else_block ({ "" }) {
-  if: (R call: ('get, key: id)) then: |link| {
+  if: (R[('get, key: id)]) then: |link| {
     block(link)
   } else: else_block
 }
@@ -55,7 +55,7 @@ get: "/" do: {
 post: "/new" do: {
   link = params['link]
   key = SHA1 new(link) to_s [[0, 10]]
-  R call: ('set, key: key, link)
+  R[('set, key: key, link)]
   redirect: "/show/#{key}"
 }
 
