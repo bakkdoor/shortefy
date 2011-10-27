@@ -50,7 +50,7 @@ class HTML {
     match m to_s {
       case /with:$/ ->
         tag = m to_s substitute: /with:$/ with: ""
-        html_block: tag body: (p rest) attrs: (p first)
+        html_block: tag body: (p rest) attrs: (p first to_hash)
       case _ ->
         html_block: (m to_s) body: p
     }
@@ -63,7 +63,7 @@ class HTML {
   }
 
   def input: attrs {
-    open_tag: "input:" attrs: attrs
+    open_tag: "input:" attrs: $ attrs to_hash
     nil
   }
 

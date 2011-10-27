@@ -28,7 +28,7 @@ def with_layout: body {
   } to_s
 }
 
-def with_link: id do: block else: else_block ({ redirect: "/" }) {
+def with_link: id do: block else: else_block ({ "" }) {
   if: (R[('get, key: id)]) then: |link| {
     block(link)
   } else: else_block
@@ -52,13 +52,13 @@ def counter: id {
 
 get: "/" do: {
   with_layout: |h| {
-    h form: <['action => "/new", 'method => "post"]> with: {
+    h form: { action: "/new" method: "post" } with: {
       h fieldset: {
-        h label: <['for => "title"]> with: "Link"
+        h label: { for: "link" } with: "Link"
         h br
-        h input: <['type => "text", 'id => "link", 'name => "link", 'value => "http://"]>
+        h input: { type: "text" id: "link" name: "link" value: "http://" }
         h br
-        h input: <['type => "submit", 'value => "SAVE"]>
+        h input: { type: "submit" value: "SAVE" }
       }
     }
   }
@@ -77,9 +77,11 @@ get: "/show/:id" do: |id| {
       h h1: "ID: #{id}"
       h h2: "Clicks: #{counter: id}"
       h h2: {
-        h a: <['href => link]> with: link
+        h a: { href: link } with: link
       }
     }
+  } else: {
+    redirect: "/"
   }
 }
 
