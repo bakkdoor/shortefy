@@ -22,7 +22,7 @@ def with_layout: body {
       }
       h body: {
         h h1: "Shortefy"
-        body(h)
+        body call: [h]
       }
     }
   } to_s
@@ -30,7 +30,7 @@ def with_layout: body {
 
 def with_link: id do: block else: else_block ({ "" }) {
   if: (R[('get, key: id)]) then: |link| {
-    block(link)
+    block call: [link]
   } else: else_block
 }
 
