@@ -22,6 +22,7 @@ def with_layout: body {
         h title: "Shortefy v0.0.1"
       }
       h body: {
+        h h1: "Shortefy"
         body(h)
       }
     }
