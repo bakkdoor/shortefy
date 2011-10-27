@@ -1,4 +1,3 @@
-require("rubygems")
 require("sha1")
 require: "sinatra"
 require: "html"
@@ -29,7 +28,7 @@ def with_layout: body {
   } to_s
 }
 
-def with_link: id do: block else: else_block ({ "" }) {
+def with_link: id do: block else: else_block ({ redirect: "/" }) {
   if: (R[('get, key: id)]) then: |link| {
     block(link)
   } else: else_block
@@ -81,8 +80,6 @@ get: "/show/:id" do: |id| {
         h a: <['href => link]> with: link
       }
     }
-  } else: {
-    redirect: "/"
   }
 }
 
@@ -93,4 +90,8 @@ get: "/:id" do: |id| {
   }
 }
 
-not_found: { "Invalid page. Sorry :(" }
+not_found: {
+ with_layout: |h| {
+    h h1: "Sorry, this page does not exist :("
+  }
+}
