@@ -12,6 +12,7 @@ class String {
 class HTML {
   def initialize {
     @buf = ""
+    @indent = 0
   }
 
   def initialize: block {
@@ -19,7 +20,11 @@ class HTML {
     block call: [self]
   }
 
-  def open_tag: name attrs: attrs (<[]>) {
+  def open_tag: name attrs: attrs (<[]>) indent: indent (true) {
+    @buf << "\n"
+    @buf << (" " * @indent)
+    @indent = @indent + 2
+
     @buf << "<" << (name but_last)
     unless: (attrs empty?) do: {
       @buf << " "
@@ -30,9 +35,15 @@ class HTML {
       }
     }
     @buf << ">"
+
+    { @indent = @indent - 2 } unless: indent
   }
 
   def close_tag: name {
+    @buf << "\n"
+    @indent = @indent - 2
+    @buf << (" " * @indent)
+
     @buf << "</" << (name but_last) << ">"
   }
 
@@ -40,7 +51,7 @@ class HTML {
     open_tag: tag attrs: attrs
     match body first {
       case Block -> @buf << (body first call)
-      case _ -> @buf << (body first)
+      case _ -> @buf << "\n" << (" " * @indent) << (body first)
     }
     close_tag: tag
     nil
@@ -58,16 +69,17 @@ class HTML {
   }
 
   def br {
+    @buf << "\n" << (" " * @indent)
     @buf << "<br/>"
     nil
   }
 
   def input: attrs {
-    open_tag: "input:" attrs: $ attrs to_hash
+    open_tag: "input:" attrs: (attrs to_hash) indent: false
     nil
   }
 
   def to_s {
-    @buf
+    @buf from: 1 to: -1
   }
 }
