@@ -98,7 +98,7 @@ get: "/:id" do: |id| {
 }
 
 not_found: {
- with_layout: |h| {
+  with_layout: |h| {
     h h1: "Sorry, this page does not exist :("
   }
 }
