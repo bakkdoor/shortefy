@@ -56,14 +56,14 @@ def counter: id {
 # PAGE ROUTES
 
 get: "/" do: {
-  with_layout: |h| {
-    h form: { action: "/new" method: "post" } with: {
-      h fieldset: {
-        h label: { for: "link" } with: "Link"
-        h br
-        h input: { type: "text" id: "link" name: "link" value: "http://" }
-        h br
-        h input: { type: "submit" value: "SAVE" }
+  with_layout: @{
+    form: { action: "/new" method: "post" } with: @{
+      fieldset: @{
+        label: { for: "link" } with: "Link"
+        br
+        input: { type: "text" id: "link" name: "link" value: "http://" }
+        br
+        input: { type: "submit" value: "SAVE" }
       }
     }
   }
@@ -78,11 +78,11 @@ post: "/new" do: {
 
 get: "/show/:id" do: |id| {
   with_link: id do: |link| {
-    with_layout: |h| {
-      h h1: "ID: #{id}"
-      h h2: "Clicks: #{counter: id}"
-      h h2: {
-        h a: { href: link } with: link
+    with_layout: @{
+      h1: "ID: #{id}"
+      h2: "Clicks: #{counter: id}"
+      h2: @{
+        a: { href: link } with: link
       }
     }
   } else: {
@@ -98,7 +98,7 @@ get: "/:id" do: |id| {
 }
 
 not_found: {
-  with_layout: |h| {
-    h h1: "Sorry, this page does not exist :("
+  with_layout: @{
+    h1: "Sorry, this page does not exist :("
   }
 }
