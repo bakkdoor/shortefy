@@ -18,12 +18,12 @@ set: 'port to: 3000
 
 # basic html layout
 def with_layout: body {
-  HTML new: |h| {
-    h html: {
-      h head: {
-        h title: "Shortefy v0.0.1"
+  HTML new: @{
+    html: @{
+      head: @{
+        title: "Shortefy v0.0.1"
       }
-      h body: {
+      body: |h| {
         h h1: "Shortefy"
         body call: [h]
       }
@@ -32,9 +32,7 @@ def with_layout: body {
 }
 
 def with_link: id do: block else: else_block ({ "" }) {
-  if: (R[('get, key: id)]) then: |link| {
-    block call: [link]
-  } else: else_block
+  if: (R[('get, key: id)]) then: block else: else_block
 }
 
 def key: id {
